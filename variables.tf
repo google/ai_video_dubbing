@@ -19,7 +19,7 @@
 variable "gcp_project" {
   type        = string
   description = "Google Cloud Project ID where the artifacts will be deployed"
-  default     = "hectorparra-test"
+  default     = "my-project"
 }
 
 variable "gcp_region" {
