@@ -30,7 +30,7 @@ Roles that will be automatically  granted to the service account during the inst
 
 1. Open a shell \
 
-2. Clone the git repository (GoB only right now:_ git clone "sso://professional-services/solutions/ai\_video\_dubbing_") \
+2. Clone the [git repository](https://github.com/google/ai_video_dubbing)
 
 3. Open a text editor and configure the following installation variables in the file _“variables.tf”_
 
