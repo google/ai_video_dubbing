@@ -321,4 +321,7 @@ Just download the videos from gs://{gcs\_bucket}/output/{YYYYMMDD} and make the 
 
 Note:
 
-For the initial tests, the scheduled execution period might be too long. The recommendation in these kinds of situations is just to disable the schedule and run it on demand.
+For the initial tests, the scheduled execution period might be too long. The recommendation in these kinds of situations is just to disable the schedule and run it on demand. To do that:
+1. Go to the Cloud Scheduler tab in your Google Cloud project and
+2. Check the box next to “ai-dubbing-trigger”
+3. Click on “Force Run”
