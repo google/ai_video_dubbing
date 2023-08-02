@@ -47,10 +47,10 @@ from googleapiclient.errors import HttpError
 GCP_PROJECT = os.getenv('GCP_PROJECT', '')
 CONFIG_SPREADSHEET_ID = os.getenv('CONFIG_SPREADSHEET_ID', '')
 CONFIG_SHEET_NAME = os.getenv('CONFIG_SHEET_NAME', 'config')
-CONFIG_RANGE_NAME = os.getenv('CONFIG_RANGE_NAME', 'config!A1:M')
+CONFIG_RANGE_NAME = os.getenv('CONFIG_RANGE_NAME', 'config!A1:N')
 TTS_FILE_COLUMN = os.getenv('TTS_FILE_COLUMN', 'K')
-STATUS_COLUMN = os.getenv('STATUS_COLUMN', 'L')
-LAST_UPDATE_COLUMN = os.getenv('LAST_UPDATE_COLUMN', 'M')
+STATUS_COLUMN = os.getenv('STATUS_COLUMN', 'M')
+LAST_UPDATE_COLUMN = os.getenv('LAST_UPDATE_COLUMN', 'N')
 GENERATE_VIDEO_TOPIC = os.getenv('GENERATE_VIDEO_TOPIC', 'generate_video_trigger')
 
 def main(event: Dict[str, Any], context=Optional[Context]):
@@ -310,4 +310,3 @@ if __name__ == '__main__':
       context=None)
 
 # [END main]
-

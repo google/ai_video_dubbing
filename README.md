@@ -130,6 +130,8 @@ You can use the [web-based SSML-Editor](https://actions-on-google-labs.github.io
    </td>
    <td style="background-color: #34a853"><strong>Type</strong>
    </td>
+   <td style="background-color: #34a853"><strong>Mandatory</strong>
+   </td>
    <td style="background-color: #34a853"><strong>Description</strong>
    </td>
    <td style="background-color: #34a853"><strong>Sample Value</strong>
@@ -141,6 +143,8 @@ You can use the [web-based SSML-Editor](https://actions-on-google-labs.github.io
    <td style="background-color: #4285f4"><strong>campaign</strong>
    </td>
    <td style="background-color: null">Input
+   </td>
+   <td style="background-color: null">Yes
    </td>
    <td style="background-color: null">A string to generate the name of the video
    </td>
@@ -154,6 +158,8 @@ You can use the [web-based SSML-Editor](https://actions-on-google-labs.github.io
    </td>
    <td style="background-color: null">Input
    </td>
+   <td style="background-color: null">Yes
+   </td>
    <td style="background-color: null">A string to generate the name of the video
    </td>
    <td style="background-color: null">outdoor
@@ -165,6 +171,8 @@ You can use the [web-based SSML-Editor](https://actions-on-google-labs.github.io
    <td style="background-color: #4285f4"><strong>gcs_bucket</strong>
    </td>
    <td style="background-color: null">Input
+   </td>
+   <td style="background-color: null">Yes
    </td>
    <td style="background-color: null">The bucket where video_file and base_audio_file could be located (the service account must be granted access). We recommend to use the same gcs_bucket as for the output
    </td>
@@ -178,6 +186,8 @@ You can use the [web-based SSML-Editor](https://actions-on-google-labs.github.io
    </td>
    <td style="background-color: null">Input
    </td>
+   <td style="background-color: null">Yes
+   </td>
    <td style="background-color: null">The location of the master video file within the gcs_bucket
    </td>
    <td style="background-color: null">input/videos/bumper_base_video.mp4
@@ -190,6 +200,8 @@ You can use the [web-based SSML-Editor](https://actions-on-google-labs.github.io
    </td>
    <td style="background-color: null">Input
    </td>
+   <td style="background-color: null">No
+   </td>
    <td style="background-color: null">The location of the base audio file within the gcs_bucket
    </td>
    <td style="background-color: null">input/audios/bumper_base_audio.mp3
@@ -201,6 +213,8 @@ You can use the [web-based SSML-Editor](https://actions-on-google-labs.github.io
    <td style="background-color: #4285f4"><strong>text</strong>
    </td>
    <td style="background-color: null">Input
+   </td>
+   <td style="background-color: null">Yes
    </td>
    <td style="background-color: null">The SSML text to convert to speech
    </td>
@@ -232,6 +246,8 @@ Find your own style in the constantly renewed catalog of the &lt;emphasis level=
    </td>
    <td style="background-color: null">Input
    </td>
+   <td style="background-color: null">Yes
+   </td>
    <td style="background-color: null">The id of the voice to use
    </td>
    <td style="background-color: null">en-GB-Wavenet-C##FEMALE
@@ -243,6 +259,8 @@ Find your own style in the constantly renewed catalog of the &lt;emphasis level=
    <td style="background-color: #4285f4"><strong>millisecond_start_audio</strong>
    </td>
    <td style="background-color: null">Input
+   </td>
+   <td style="background-color: null">No
    </td>
    <td style="background-color: null">Millisecond of the video when the audio must start. This could be also accomplished using TTS
    </td>
@@ -258,6 +276,8 @@ Find your own style in the constantly renewed catalog of the &lt;emphasis level=
    </td>
    <td style="background-color: null">Input
    </td>
+   <td style="background-color: null">Yes
+   </td>
    <td style="background-color: null">The audio encoding available
    </td>
    <td style="background-color: null">MP3
@@ -266,9 +286,24 @@ Find your own style in the constantly renewed catalog of the &lt;emphasis level=
    </td>
   </tr>
   <tr>
+   <td style="background-color: #4285f4"><strong>base_audio_vol_percent</strong>
+   </td>
+   <td style="background-color: null">Input
+   </td>
+   <td style="background-color: null">Yes
+   </td>
+   <td style="background-color: null">Modifies the volume of the base audio (whether in the base video or in the base audio file)
+   </td>
+   <td style="background-color: null">0.6
+   </td>
+   <td style="background-color: null"></td>
+  </tr>
+  <tr>
    <td style="background-color: #fbbc04"><strong>final_video_file_url</strong>
    </td>
    <td>Output
+   </td>
+   <td style="background-color: null">N/A
    </td>
    <td style="background-color: null">The location of the generated video file with the base audio and speech
    </td>
@@ -282,6 +317,8 @@ Find your own style in the constantly renewed catalog of the &lt;emphasis level=
    </td>
    <td>Output
    </td>
+   <td style="background-color: null">N/A
+   </td>
    <td style="background-color: null">The status of the process
    </td>
    <td style="background-color: null">Video OK
@@ -293,6 +330,8 @@ Find your own style in the constantly renewed catalog of the &lt;emphasis level=
    <td style="background-color: #fbbc04"><strong>last_update</strong>
    </td>
    <td>Output
+   </td>
+   <td style="background-color: null">N/A
    </td>
    <td style="background-color: null">The last time the row was modified by the automatic process
    </td>

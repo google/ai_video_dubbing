@@ -32,10 +32,10 @@ import base64
 GCP_PROJECT = os.getenv('GCP_PROJECT', '')
 CONFIG_SPREADSHEET_ID = os.getenv('CONFIG_SPREADSHEET_ID', '')
 CONFIG_SHEET_NAME = os.getenv('CONFIG_SHEET_NAME', 'config')
-CONFIG_RANGE_NAME = os.getenv('CONFIG_RANGE_NAME', 'config!A1:L')
-FINAL_VIDEO_FILE_COLUMN = os.getenv('FINAL_VIDEO_FILE_COLUMN', 'K')
-STATUS_COLUMN = os.getenv('STATUS_COLUMN', 'L')
-LAST_UPDATE_COLUMN = os.getenv('LAST_UPDATE_COLUMN', 'M')
+CONFIG_RANGE_NAME = os.getenv('CONFIG_RANGE_NAME', 'config!A1:N')
+FINAL_VIDEO_FILE_COLUMN = os.getenv('FINAL_VIDEO_FILE_COLUMN', 'L')
+STATUS_COLUMN = os.getenv('STATUS_COLUMN', 'M')
+LAST_UPDATE_COLUMN = os.getenv('LAST_UPDATE_COLUMN', 'N')
 
 def _get_mp3_length(path: str):
     """Returns the length of a MP3 file in seconds.
@@ -103,11 +103,6 @@ def _mix_video_and_speech(config: Dict): #, video_file, speech_file,destination_
     print(input_video_file)
     _copy_file_from_gcs(config['gcs_bucket'], input_video_file, source_video_input)
 
-    # Copy base_audio_file from blob to /tmp/base_audio_[rnd].{sound_extension}
-    sound_extension = config['base_audio_file'].split(".")[1]
-    source_audio_input = f"/tmp/base_audio_{random_string}.{sound_extension}"
-    _copy_file_from_gcs(config['gcs_bucket'], config['base_audio_file'], source_audio_input)
-
     # Copy speech_file from blob to /tmp/speech[rnd].mp3
     source_speech_input = '/tmp/speech_{random_string}.mp4'.format(
         random_string=random_string)
@@ -117,6 +112,10 @@ def _mix_video_and_speech(config: Dict): #, video_file, speech_file,destination_
     generated_video_file = '/tmp/output_{random_string}.mp4'.format(
         random_string=random_string)
 
+    audio_reduction = 0.9
+    if config['base_audio_vol_percent']:
+      audio_reduction = config['base_audio_vol_percent']
+
     # Calculate when the original audio should be adjusted during and
     # after the voice dub section
     audio_down_start = int(config['millisecond_start_audio'])/1000
@@ -124,19 +123,36 @@ def _mix_video_and_speech(config: Dict): #, video_file, speech_file,destination_
     print('Voice Dub length is {voice_dub_length}'.format(
         voice_dub_length=voice_dub_length))
     audio_down_end = audio_down_start + voice_dub_length
-
-    ffmpeg_mix_command = (
-                    "ffmpeg "
-                    "-loglevel error "
-                    f"-i {source_video_input} -i {source_audio_input} -i {source_speech_input} "
-                    "-filter_complex "
-                    f"\"[2:a] adelay={config['millisecond_start_audio']}|{config['millisecond_start_audio']} [voice_dub];"
-                    f"[1:a] volume=0.9:enable='between(t,{audio_down_start},{audio_down_end})' [original_audio];"
-                    f"[original_audio] volume=0.9:enable='gt(t,{audio_down_end})' [original_audio];"
-                    f"[voice_dub][original_audio] amix=duration=longest [audio_out]"
-                    "\" "
-                    f"-map 0:v -map \"[audio_out]\" -y {generated_video_file}"
-                    )
+    if config['base_audio_file']:
+      # Copy base_audio_file from blob to /tmp/base_audio_[rnd].{sound_extension}
+      sound_extension = config['base_audio_file'].split(".")[1]
+      source_audio_input = f"/tmp/base_audio_{random_string}.{sound_extension}"
+      _copy_file_from_gcs(config['gcs_bucket'], config['base_audio_file'], source_audio_input)
+      ffmpeg_mix_command = (
+                      "ffmpeg "
+                      "-loglevel error "
+                      f"-i {source_video_input} -i {source_audio_input} -i {source_speech_input} "
+                      "-filter_complex "
+                      f"\"[2:a] adelay={config['millisecond_start_audio']}|{config['millisecond_start_audio']} [voice_dub];"
+                      f"[1:a] volume={audio_reduction}:enable='between(t,{audio_down_start},{audio_down_end})' [original_audio];"
+                      f"[original_audio] volume=0.9:enable='gt(t,{audio_down_end})' [original_audio];"
+                      f"[voice_dub][original_audio] amix=duration=longest [audio_out]"
+                      "\" "
+                      f"-map 0:v -map \"[audio_out]\" -y {generated_video_file}"
+                      )
+    else:
+      ffmpeg_mix_command = (
+                      "ffmpeg "
+                      "-loglevel error "
+                      f"-i {source_video_input} -i {source_speech_input} "
+                      "-filter_complex "
+                      f"\"[1:a] adelay={0}|{0} [voice_dub];"
+                      f"[0:a] volume={audio_reduction}:enable='between(t,{audio_down_start},{audio_down_end})' [original_audio];"
+                      f"[original_audio] volume=0.9:enable='gt(t,{audio_down_end})' [original_audio];"
+                      f"[voice_dub][original_audio] amix=duration=longest [audio_out]"
+                      "\" "
+                      f"-map 0:v -map \"[audio_out]\" -y {generated_video_file}"
+                      )
     print(f'Running command: {ffmpeg_mix_command}')
     try:
         os.system(ffmpeg_mix_command)

@@ -43,7 +43,7 @@ variable "ai_dubbing_bucket_name" {
 variable "config_spreadsheet_id" {
   type        = string
   description = "The ID of the config spreadhseet"
-  default     = "10mWAd_2RQsfyJM1_rgCICLCN_r0QIVAL_z0DzhGNKJg"
+  default     = "my-spreadhseet-id"
 }
 
 variable "execution_schedule" {
@@ -61,31 +61,31 @@ variable "config_sheet_name" {
 variable "config_sheet_range" {
   type        = string
   description = "Google Cloud Region"
-  default     = "config!A1:M"
+  default     = "config!A1:N"
 }
 
 variable "tts_file_column" {
   type        = string
   description = "Column of the TTS file in the config sheet"
-  default     = "J"
+  default     = "K"
 }
 
 variable "final_video_file_column" {
   type        = string
   description = "Column of the video file in the config sheet"
-  default     = "K"
+  default     = "L"
 }
 
 variable "status_column" {
   type        = string
   description = "Column for Status in the config sheet"
-  default     = "L"
+  default     = "M"
 }
 
 variable "last_update_column" {
   type        = string
   description = "Column for last update in the config sheet"
-  default     = "M"
+  default     = "N"
 }
 
 variable "generate_tts_files_trigger_pubsub_topic" {
